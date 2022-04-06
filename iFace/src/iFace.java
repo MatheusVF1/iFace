@@ -54,7 +54,7 @@ public class iFace {
                     else if(password.equals(contas.get(id).getPassword())){  //VERIFICANDO SE A SENHA CONFERE COM O LOGIN
                         System.out.println("\nSeja bem vindo a sua conta no iFace, " + contas.get(id).username + "!\n");
                         System.out.println("Escolha o que deseja fazer:"); //MENU DE OPÇÕES DO USUARIO ABAIXO
-                        System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Exibir alguma comunidade\n11 - Apagar sua conta\n12 - Mandar mensagens para o Feed\n13 - Controlar visualizações no Feed");
+                        System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Exibir alguma comunidade\n11 - Apagar sua conta\n12 - Mandar mensagens para o Feed\n13 - Ver meu Feed\n14 - Controlar visualizações no Feed");
                         
                         int entrada2 = -11;
 
@@ -84,6 +84,7 @@ public class iFace {
                                     for(int i = 0; i < contas.size(); i++){
                                         if(nomeAmigo.equals(contas.get(i).username)){     //PROCURANDO SE O NOME DO USUARIO EXISTE
                                             contas.get(i).addFriend(contas.get(id).username);  //ADICIONANDO SEU NOME A LISTA DE PEDIDOS DO USUARIO SOLICITADO
+                                            contas.get(i).mensagensFeed.add(contas.get(id).username + " te enviou uma solicitação de amizade"); //ADICIONA NO FEED DO AMIGO QUE ENVIOU SOLICITAÇÃO
                                             existe1++;
                                         }
                                     }
@@ -106,22 +107,23 @@ public class iFace {
 
                                             if (aceita == 0){
                                                 contas.get(id).amigosAdd.remove(i);
-                                                System.out.println("Pedido recusado!\n"); //REMOVE DA LISTA DE PEDIDOS
+                                                System.out.println("\nPedido recusado!\n"); //REMOVE DA LISTA DE PEDIDOS
                                             }
                                             else if(aceita == 1){
                                                 contas.get(id).amigos.add(contas.get(id).amigosAdd.get(i)); //ADICIONANDO NA SUA LISTA DE AMIGOS
+                                                contas.get(id).mensagensFeed.add(contas.get(id).amigosAdd.get(i) + " aceitou seu pedido de amizade!");
 
                                                 for(int k = 0; k < contas.size(); k++){
                                                     if(contas.get(id).amigosAdd.get(i).equals(contas.get(k).username)){
                                                         contas.get(k).amigos.add(contas.get(id).username);  //ADICIONANDO NA LISTA DE AMIGOS DO USUARIO
-                                                        System.out.println("Agora você e " + contas.get(k).username + " são amigos!");
+                                                        System.out.println("\nAgora você e " + contas.get(k).username + " são amigos!");
                                                     }
                                                 }
                                                 contas.get(id).amigosAdd.remove(i);
                                             }
                                         }
                                     }
-                                    else System.out.println("Você não possui pedidos de amizade!\n");
+                                    else System.out.println("\nVocê não possui pedidos de amizade!\n");
                                     break;
 
                                 case 5:
@@ -162,19 +164,25 @@ public class iFace {
                                 case 11:
                                     break;
                                 case 12:
+                                    contas.get(id).mandarFeed();
+                                    break;
+                                case 13:
+                                    contas.get(id).printarFeed();
+                                    break;
+                                case 14:
                                     break;
 
                             }
                             if(entrada2 != 0){
                             System.out.println("\nEscolha o que deseja fazer:");
-                            System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Exibir alguma comunidade\n11 - Apagar sua conta\n12 - Mandar mensagens para o Feed\n13 - Controlar visualizações no Feed");
+                            System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Exibir alguma comunidade\n11 - Apagar sua conta\n12 - Mandar mensagens para o Feed\n13 - Ver meu Feed\n14 - Controlar visualizações no Feed");
                         }
                     }
                 }
                 break;
                     
                 default:
-                    System.out.println("Número invalido digitado!!");
+                    System.out.println("\nNúmero invalido digitado!!\n");
                     break;
             }
 
