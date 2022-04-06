@@ -54,7 +54,7 @@ public class iFace {
                     else if(password.equals(contas.get(id).getPassword())){  //VERIFICANDO SE A SENHA CONFERE COM O LOGIN
                         System.out.println("\nSeja bem vindo a sua conta no iFace, " + contas.get(id).username + "!\n");
                         System.out.println("Escolha o que deseja fazer:"); //MENU DE OPÇÕES DO USUARIO ABAIXO
-                        System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Apagar sua conta\n11 - Mandar mensagens para o Feed\n12 - Controlar visualizações no Feed");
+                        System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Exibir alguma comunidade\n11 - Apagar sua conta\n12 - Mandar mensagens para o Feed\n13 - Controlar visualizações no Feed");
                         
                         int entrada2 = -11;
 
@@ -145,7 +145,19 @@ public class iFace {
                                     break;
 
                                 case 10:
-                                    
+                                    System.out.println("\nDigite o nome da comunidade que deseja ver:");
+                                    String comuni = sc.nextLine();
+                                    int exibido = 0;
+
+                                    for(int i = 0; i < contas.size(); i++){
+                                        if(contas.get(i).comunidadeDono != null && comuni.equals(contas.get(i).comunidadeDono.nomeComunidade)){
+                                            contas.get(i).comunidadeDono.mostrarComunidade();
+                                            exibido++;
+                                        }
+                                    }
+                                    if(exibido == 0){
+                                        System.out.println("\nA comunidade digitada não existe!");
+                                    }
                                     break;
                                 case 11:
                                     break;
@@ -155,7 +167,7 @@ public class iFace {
                             }
                             if(entrada2 != 0){
                             System.out.println("\nEscolha o que deseja fazer:");
-                            System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Recuperar informações sobre algum Usuário\n10 - Apagar sua conta\n11 - Mandar mensagens para o Feed\n12 - Controlar visualizações no Feed");
+                            System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Exibir alguma comunidade\n11 - Apagar sua conta\n12 - Mandar mensagens para o Feed\n13 - Controlar visualizações no Feed");
                         }
                     }
                 }
