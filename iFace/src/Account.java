@@ -10,8 +10,8 @@ public class Account {
     public ArrayList<String> amigosAdd = new ArrayList<String>();
     public ArrayList<String> amigos = new ArrayList<String>();
     public ArrayList<String> comunidades = new ArrayList<String>();
+    public ArrayList<String> minhasComunidades = new ArrayList<Community>();
     public ArrayList<Messages> minhasMensagens = new ArrayList<Messages>();
-    public ArrayList<Community> minhasComunidades = new ArrayList<Community>();
 
     public String getPassword(){
         return this.password;
@@ -118,13 +118,31 @@ public class Account {
 
 		System.out.println("Comunidades que estou:");
 		for(int i = 0; i < minhasComunidades.size(); i++) {
-			System.out.println("   " + minhasComunidades.get(i));
+			System.out.println("   " + minhasComunidades.get(i).nomeComunidade);
 		}
+    }
+
+    public void exibirPerfilAlguem(ArrayList<Account> contas){
+        Scanner sc = new Scanner(System.in);
+        int sucesso = 0;
+        System.out.println("Digite o nome de quem deseja ver o perfil");
+        String pessoa = sc.nextLine();
+
+        for(int i = 0; i < contas.size(); i++){
+            if(pessoa.equals(contas.get(i).username)){
+                contas.get(i).exibirPerfil();
+                sucesso++;
+            }
+        }
+        if(sucesso == 0){
+            System.out.println("\nO usuario digitado não existe!\n");
+        }
+
     }
 
     public void addFriend(String nome){
         String name = nome;
-        amigosAdd.add(name);
+        amigosAdd.add(name); //ADICIONA NA LISTA DE PEDIDOS
         System.out.println("Pedido de amizade enviado!");
     }
 
@@ -165,17 +183,17 @@ public class Account {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Digite o nome da pessoa que deseja ler as mensagens");
-        String pessoa = sc.nextLine();
+        String pessoa = sc.nextLine();  //ESCOLHE O NOME DA PESSOA QUE DESEJA LER
         int leu = 0;
 
         for(int i = 0; i < minhasMensagens.size(); i++){
             if(pessoa.equals(minhasMensagens.get(i).remetente)){
-                minhasMensagens.get(i).printarMensagens();
+                minhasMensagens.get(i).printarMensagens();  //IMPRIME TODAS MENSAGENS DA PESSOA DIGITADA
                 leu++;
             }
         }
 
-        if(leu == 0){
+        if(leu == 0){  //NÃO HAVIA MENSAGENS DA PESSOA
             System.out.println("\nO nome digitado está erradou ou vocês ainda não possuem mensagens!");
         }
 
@@ -186,5 +204,26 @@ public class Account {
 		comunidade.criarNovaComunidade(username);
 
 		comunidadeDono = comunidade;
-	}
+    }
+    
+    public void adicionarComunidade(ArrayList<Account> contas){
+        Scanner sc = new Scanner(System.in);
+
+        if(comunidadeDono != null){
+            System.out.println("Digite o usuario que deseja adicionar a sua comunidade: ");
+            String pessoa = sc.nextLine();
+            int adicionado = 0;
+            for(int i = 0; i < contas.size(); i++){
+                if(pessoa.equals(contas.get(i).username)){  
+                    comunidadeDono.membros.add(pessoa);  //ADICIONA A PESSOA COMO MEMBRO E COLOCA NA COMUNIDADES DELA
+                    contas.get(i).minhasComunidades.add(comunidadeDono.nomeComunidade);
+                    System.out.println("\nPronto! " + pessoa + " faz parte da sua comunidade agora!\n");
+                    adicionado++;
+                }
+            }
+            if(adicionado == 0){
+                System.out.println("\nO usuario digitado não existe!\n");
+            }
+        }
+    }
 }
