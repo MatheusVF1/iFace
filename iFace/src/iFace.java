@@ -54,7 +54,7 @@ public class iFace {
                     else if(password.equals(contas.get(id).getPassword())){  //VERIFICANDO SE A SENHA CONFERE COM O LOGIN
                         System.out.println("\nSeja bem vindo a sua conta no iFace, " + contas.get(id).username + "!\n");
                         System.out.println("Escolha o que deseja fazer:"); //MENU DE OPÇÕES DO USUARIO ABAIXO
-                        System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Recuperar informações sobre algum Usuário\n10 - Apagar sua conta\n11 - Mandar mensagens para o Feed\n12 - Controlar visualizações no Feed");
+                        System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Apagar sua conta\n11 - Mandar mensagens para o Feed\n12 - Controlar visualizações no Feed");
                         
                         int entrada2 = -11;
 
@@ -137,10 +137,15 @@ public class iFace {
                                     break;
 
                                 case 8:
+                                    contas.get(id).adicionarComunidade(contas);
                                     break;
+
                                 case 9:
+                                    contas.get(id).exibirPerfilAlguem(contas);
                                     break;
+
                                 case 10:
+                                    
                                     break;
                                 case 11:
                                     break;
