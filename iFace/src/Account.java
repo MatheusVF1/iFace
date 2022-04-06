@@ -10,8 +10,9 @@ public class Account {
     public ArrayList<String> amigosAdd = new ArrayList<String>();
     public ArrayList<String> amigos = new ArrayList<String>();
     public ArrayList<String> comunidades = new ArrayList<String>();
-    public ArrayList<String> minhasComunidades = new ArrayList<Community>();
+    public ArrayList<String> minhasComunidades = new ArrayList<String>();
     public ArrayList<Messages> minhasMensagens = new ArrayList<Messages>();
+    public ArrayList<String> mensagensFeed = new ArrayList<String>();
 
     public String getPassword(){
         return this.password;
@@ -111,14 +112,14 @@ public class Account {
 			System.out.println("   " + amigos.get(i));
 		}
 
-		if(minhasComunidades != null) {
+		if(comunidadeDono != null) {
 			System.out.println("Minha comunidade: " + comunidadeDono.nomeComunidade + "\n  Descrição: " + comunidadeDono.descricao);
 
-		}
+        }
 
-		System.out.println("Comunidades que estou:");
+		System.out.println("\nComunidades que estou:");
 		for(int i = 0; i < minhasComunidades.size(); i++) {
-			System.out.println("   " + minhasComunidades.get(i).nomeComunidade);
+			System.out.println("   " + minhasComunidades.get(i));
 		}
     }
 
@@ -225,5 +226,24 @@ public class Account {
                 System.out.println("\nO usuario digitado não existe!\n");
             }
         }
+    }
+
+    public void mandarFeed(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Digite alguma coisa para seu feed:");
+        String mensagem = sc.nextLine();
+
+        mensagensFeed.add(mensagem);
+    }
+
+    public void printarFeed(){
+        if(mensagensFeed.size() > 0){
+            System.out.println("\nMensagens no feed:\n");
+
+            for(int i = 0; i < mensagensFeed.size(); i++){
+                System.out.println("--> " + mensagensFeed.get(i));
+            }
+        }
+        else System.out.println("\nVocê ainda não possui nenhuma mensagem!!\n");
     }
 }
