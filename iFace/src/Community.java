@@ -25,8 +25,8 @@ public class Community{
 	
 	public void mostrarComunidade() {
 		System.out.println("\n--------------------------\n" + nomeComunidade.toUpperCase() + "\n--------------------------");
-		System.out.println("Criado por: " + this.dono);
-		System.out.println("Descrição: " + this.descricao);
+		System.out.println("Criado por: " + dono);
+		System.out.println("Descrição: " + descricao);
 		System.out.println("Membros:");
 		for(int i = 0; i < membros.size(); i++) {
 			System.out.println("   " + membros.get(i));
