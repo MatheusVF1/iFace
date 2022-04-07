@@ -54,7 +54,7 @@ public class iFace {
                     else if(password.equals(contas.get(id).getPassword())){  //VERIFICANDO SE A SENHA CONFERE COM O LOGIN
                         System.out.println("\nSeja bem vindo a sua conta no iFace, " + contas.get(id).username + "!\n");
                         System.out.println("Escolha o que deseja fazer:"); //MENU DE OPÇÕES DO USUARIO ABAIXO
-                        System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Exibir alguma comunidade\n11 - Apagar sua conta\n12 - Mandar mensagens para o Feed\n13 - Ver meu Feed\n14 - Controlar visualizações no Feed");
+                        System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Exibir lista de amigos\n6 - Enviar uma mensagem\n7 - Ler minhas mensagens\n8 - Criar uma comunidade\n9 - Adicionar membros\n10 - Exibir o perfil de algum usuário\n11 - Exibir alguma comunidade\n12 - Mandar mensagens para o Feed\n13 - Ver meu Feed\n14 - Controlar visualizações no Feed\n15 - Exibir o Feed de algum usuario\n16 - Apagar sua conta");
                         
                         int entrada2 = -11;
 
@@ -111,11 +111,11 @@ public class iFace {
                                             }
                                             else if(aceita == 1){
                                                 contas.get(id).amigos.add(contas.get(id).amigosAdd.get(i)); //ADICIONANDO NA SUA LISTA DE AMIGOS
-                                                contas.get(id).mensagensFeed.add(contas.get(id).amigosAdd.get(i) + " aceitou seu pedido de amizade!");
 
                                                 for(int k = 0; k < contas.size(); k++){
                                                     if(contas.get(id).amigosAdd.get(i).equals(contas.get(k).username)){
                                                         contas.get(k).amigos.add(contas.get(id).username);  //ADICIONANDO NA LISTA DE AMIGOS DO USUARIO
+                                                        contas.get(k).mensagensFeed.add(contas.get(id).username + " aceitou seu pedido de amizade!");
                                                         System.out.println("\nAgora você e " + contas.get(k).username + " são amigos!");
                                                     }
                                                 }
@@ -127,26 +127,37 @@ public class iFace {
                                     break;
 
                                 case 5:
+                                    if(contas.get(id).amigos.size() > 0){
+                                        System.out.println("Seus amigos: ");
+                                        for(int i = 0; i < contas.get(id).amigos.size(); i++){
+                                            System.out.println("   " + contas.get(id).amigos.get(i));
+                                        }
+                                    }
+                                    else{
+                                        System.out.println("\nVocê ainda não possui nenhum amigo!\n");
+                                    }
+                                    break;
+                                case 6:
                                     contas.get(id).mandarMensagem(contas);  //ENVIAR MENSAGEM PARA ALGUEM
                                     break;
 
-                                case 6:
+                                case 7:
                                     contas.get(id).lerMensagens();  //LER AS MINHAS MENSAGENS
                                     break;
 
-                                case 7:
+                                case 8:
                                     contas.get(id).criarComunidade();  //CRIAR MINHA COMUNIDADE
                                     break;
 
-                                case 8:
+                                case 9:
                                     contas.get(id).adicionarComunidade(contas);
                                     break;
 
-                                case 9:
+                                case 10:
                                     contas.get(id).exibirPerfilAlguem(contas);
                                     break;
 
-                                case 10:
+                                case 11:
                                     System.out.println("\nDigite o nome da comunidade que deseja ver:");
                                     String comuni = sc.nextLine();
                                     int exibido = 0;
@@ -161,21 +172,81 @@ public class iFace {
                                         System.out.println("\nA comunidade digitada não existe!");
                                     }
                                     break;
-                                case 11:
-                                    break;
+
                                 case 12:
                                     contas.get(id).mandarFeed();
                                     break;
+
                                 case 13:
                                     contas.get(id).printarFeed();
                                     break;
+
                                 case 14:
+                                    contas.get(id).controlarFeed();
+                                    break;
+                                case 15:
+                                    contas.get(id).exibirFeedAlguem(contas, contas.get(id).username);
+                                    break;
+                                case 16:
+                                    System.out.println("\nTem certeza que deseja excluir sua conta?\nDigite 1 para confirmar e 0 para cancelar.");
+                                    int excluir = sc.nextInt();
+                                    sc.nextLine();
+                                    
+                                    if(excluir == 1){
+                                        for(int i = 0; i < contas.size(); i++) {
+                                            for(int j = 0; j < contas.get(i).amigos.size(); j++) {
+                                                if(contas.get(id).username.equals(contas.get(i).amigos.get(j))) { //remove da lisat de amizade
+                                                    contas.get(i).amigos.remove(j);
+                                                }
+                                            }
+                                        }
+
+                                        for(int i = 0; i < contas.size(); i++) {
+                                            for(int j = 0; j < contas.get(i).amigosAdd.size(); j++) {
+                                                if(contas.get(id).username.equals(contas.get(i).amigosAdd.get(j))) {  //remove da lista de pedidos de amizade
+                                                    contas.get(i).amigosAdd.remove(j);
+                                                }
+                                            }
+                                        }
+                                        
+                                        for(int i = 0; i < contas.size(); i++) {
+                                            for(int j = 0; j < contas.get(i).minhasMensagens.size(); j++) {
+                                                if(contas.get(id).username.equals(contas.get(i).minhasMensagens.get(j).remetente)) { //remove da lista de mensagens
+                                                    contas.get(i).minhasMensagens.remove(j);
+                                                }
+                                            }
+                                        }
+                                        
+                                        for(int i = 0; i < contas.size(); i++) {
+                                            if(contas.get(i).comunidadeDono != null) {
+                                                for(int j = 0; j < contas.get(i).comunidadeDono.membros.size(); j++) {
+                                                    if(contas.get(id).username.equals(contas.get(i).comunidadeDono.membros.get(j))) { //remove do membro de outras comunidades
+                                                        contas.get(i).comunidadeDono.membros.remove(j);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        if(contas.get(id).comunidadeDono != null){
+                                            for(int i = 0; i < contas.size(); i++){
+                                                for(int j = 0; j < contas.get(i).minhasComunidades.size(); j++){
+                                                    if(contas.get(id).comunidadeDono.nomeComunidade.equals(contas.get(i).minhasComunidades.get(j))){
+                                                        contas.get(i).minhasComunidades.remove(j);
+                                                    }
+                                                }
+                                            }
+                                        }
+    
+                                        contas.remove(id);
+                                        System.out.println("\nConta excluida com sucesso!\n");
+                                        entrada2 = 0;
+                                    }
                                     break;
 
                             }
                             if(entrada2 != 0){
                             System.out.println("\nEscolha o que deseja fazer:");
-                            System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Enviar uma mensagem\n6 - Ler minhas mensagens\n7 - Criar uma comunidade\n8 - Adicionar membros\n9 - Exibir o perfil de algum usuário\n10 - Exibir alguma comunidade\n11 - Apagar sua conta\n12 - Mandar mensagens para o Feed\n13 - Ver meu Feed\n14 - Controlar visualizações no Feed");
+                            System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Exibir lista de amigos\n6 - Enviar uma mensagem\n7 - Ler minhas mensagens\n8 - Criar uma comunidade\n9 - Adicionar membros\n10 - Exibir o perfil de algum usuário\n11 - Exibir alguma comunidade\n12 - Mandar mensagens para o Feed\n13 - Ver meu Feed\n14 - Controlar visualizações no Feed\n15 - Apagar sua conta");
                         }
                     }
                 }
