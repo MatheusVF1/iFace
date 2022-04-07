@@ -271,13 +271,15 @@ public class Account {
         String pessoa = sc.nextLine();
 
         for(int i = 0; i < contas.size(); i++){
-            if(contas.get(i).username.equals(pessoa));
-            indice = i;
-            sucesso++;
+            if(contas.get(i).username.equals(pessoa)){
+                indice = i;
+                sucesso++;
+            }
         }
         if(sucesso == 1){
             if(contas.get(indice).feedControl == 0){
                 contas.get(indice).printarFeed();
+                System.out.println("---------- SUPER DIATLOV POWER -----------");
             }
             else if(contas.get(indice).feedControl == 1){
                 for(int k = 0; k < contas.get(indice).amigos.size(); k++){
