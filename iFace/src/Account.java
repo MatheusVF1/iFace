@@ -5,7 +5,7 @@ public class Account {
     public String login, username;
     private String password;
     public String sexo, cidade, pais;
-    public int idade;
+    public int idade, feedControl = 0;
     public Community comunidadeDono = null;
     public ArrayList<String> amigosAdd = new ArrayList<String>();
     public ArrayList<String> amigos = new ArrayList<String>();
@@ -184,6 +184,13 @@ public class Account {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Digite o nome da pessoa que deseja ler as mensagens");
+        if(minhasMensagens.size() > 0){
+            System.out.println("Suas conversas:");
+            for(int i = 0; i < minhasMensagens.size(); i++){
+                System.out.print(minhasMensagens.get(i).remetente + " / ");
+            }
+            System.out.println("\n\n");
+        }
         String pessoa = sc.nextLine();  //ESCOLHE O NOME DA PESSOA QUE DESEJA LER
         int leu = 0;
 
@@ -195,23 +202,28 @@ public class Account {
         }
 
         if(leu == 0){  //NÃO HAVIA MENSAGENS DA PESSOA
-            System.out.println("\nO nome digitado está erradou ou vocês ainda não possuem mensagens!");
+            System.out.println("\nO nome digitado está errado ou vocês ainda não possuem mensagens!");
         }
 
     }
 
     public void criarComunidade() {
-		Community comunidade = new Community();
+        if(comunidadeDono == null){
+        Community comunidade = new Community();
 		comunidade.criarNovaComunidade(username);
 
 		comunidadeDono = comunidade;
+        }
+        else{
+            System.out.println("\nVocê já é dono de uma comunidade!\n");
+        }
     }
     
     public void adicionarComunidade(ArrayList<Account> contas){
         Scanner sc = new Scanner(System.in);
 
         if(comunidadeDono != null){
-            System.out.println("Digite o usuario que deseja adicionar a sua comunidade: ");
+            System.out.println("\nDigite o usuario que deseja adicionar a sua comunidade: ");
             String pessoa = sc.nextLine();
             int adicionado = 0;
             for(int i = 0; i < contas.size(); i++){
@@ -225,6 +237,9 @@ public class Account {
             if(adicionado == 0){
                 System.out.println("\nO usuario digitado não existe!\n");
             }
+        }
+        else{
+            System.out.println("\nVocê ainda não é dono de uma comunidade!");
         }
     }
 
@@ -245,5 +260,56 @@ public class Account {
             }
         }
         else System.out.println("\nVocê ainda não possui nenhuma mensagem!!\n");
+    }
+
+    public void exibirFeedAlguem(ArrayList<Account> contas, String nick){
+        Scanner sc = new Scanner(System.in);
+        int sucesso = 0;
+        int indice = 0;
+        int sucesso1 = 0;
+        System.out.println("Digite o nome de quem deseja ver o Feed");
+        String pessoa = sc.nextLine();
+
+        for(int i = 0; i < contas.size(); i++){
+            if(contas.get(i).username.equals(pessoa));
+            indice = i;
+            sucesso++;
+        }
+        if(sucesso == 1){
+            if(contas.get(indice).feedControl == 0){
+                contas.get(indice).printarFeed();
+            }
+            else if(contas.get(indice).feedControl == 1){
+                for(int k = 0; k < contas.get(indice).amigos.size(); k++){
+                    if(contas.get(indice).amigos.get(k).equals(nick)){
+                        contas.get(indice).printarFeed();
+                        sucesso1++;
+                    }
+                }
+                if(sucesso1 == 0){
+                    System.out.println("\nDesculpe, o usuario so permite que amigos vejam seu Feed!\n");
+                }
+            }
+        }
+        else{
+            System.out.println("\nO usuario digitado não existe!\n");
+        }
+
+    }
+
+    public void controlarFeed(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\nQuem você deseja que possa ver o seu Feed? Escolha um número abaixo:");
+        System.out.println("0 - Todos usuarios do iFace\n1 - Somente amigos");
+        int auxiliar = sc.nextInt();
+
+        if(auxiliar == 0){
+            feedControl = 0;
+            System.out.println("\nPronto! Todos os usuarios podem ver seu Feed agora!\n");
+        }
+        else if(auxiliar == 1){
+            feedControl = 1;
+            System.out.println("\nPronto! Apenas seus amigos podem ver seu Feed agora!\n");
+        }
     }
 }
