@@ -14,7 +14,7 @@ public class Messages{
 			}
 		}
 		else {
-			System.out.println("Você ainda não possui nenhuma mensagem com " + remetente);
+			System.out.println("Você ainda não recebeu nenhuma mensagem do(a) " + remetente);
 		}
 	}
 	
