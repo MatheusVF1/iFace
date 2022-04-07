@@ -246,7 +246,7 @@ public class iFace {
                             }
                             if(entrada2 != 0){
                             System.out.println("\nEscolha o que deseja fazer:");
-                            System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Exibir lista de amigos\n6 - Enviar uma mensagem\n7 - Ler minhas mensagens\n8 - Criar uma comunidade\n9 - Adicionar membros\n10 - Exibir o perfil de algum usuário\n11 - Exibir alguma comunidade\n12 - Mandar mensagens para o Feed\n13 - Ver meu Feed\n14 - Controlar visualizações no Feed\n15 - Apagar sua conta");
+                            System.out.println("0 - Sair da Conta\n1 - Editar meu perfil\n2 - Exibir meu perfil\n3 - Adicionar um amigo\n4 - Pedidos de amizade\n5 - Exibir lista de amigos\n6 - Enviar uma mensagem\n7 - Ler minhas mensagens\n8 - Criar uma comunidade\n9 - Adicionar membros\n10 - Exibir o perfil de algum usuário\n11 - Exibir alguma comunidade\n12 - Mandar mensagens para o Feed\n13 - Ver meu Feed\n14 - Controlar visualizações no Feed\n15 - Exibir o Feed de algum usuario\n16 - Apagar sua conta");
                         }
                     }
                 }
