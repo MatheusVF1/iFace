@@ -2,24 +2,32 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Account {
-    public String login, username;
+    private String login, username;
     private String password;
-    public String sexo, cidade, pais;
-    public int idade, feedControl = 0;
-    public Community comunidadeDono = null;
-    public ArrayList<String> amigosAdd = new ArrayList<String>();
-    public ArrayList<String> amigos = new ArrayList<String>();
+    private String sexo, cidade, pais;
+    private int idade, feedControl = 0;
+    private Community comunidadeDono = null;
+    private ArrayList<String> amigosAdd = new ArrayList<String>();
+    private ArrayList<String> amigos = new ArrayList<String>();
     public ArrayList<String> comunidades = new ArrayList<String>();
-    public ArrayList<String> minhasComunidades = new ArrayList<String>();
-    public ArrayList<Messages> minhasMensagens = new ArrayList<Messages>();
-    public ArrayList<String> mensagensFeed = new ArrayList<String>();
+    private ArrayList<String> minhasComunidades = new ArrayList<String>();
+    private ArrayList<Messages> minhasMensagens = new ArrayList<Messages>();
+    private ArrayList<String> mensagensFeed = new ArrayList<String>();
+    Scanner sc = new Scanner(System.in);
+
+    public String getLogin(){
+        return this.login;
+    }
+
+    public String getUsername(){
+        return this.username;
+    }
 
     public String getPassword(){
         return this.password;
     }
 
     public void newAccount(){
-        Scanner sc = new Scanner(System.in);
 
         System.out.print("Login: ");
         login = sc.nextLine();
@@ -29,10 +37,10 @@ public class Account {
 
         System.out.print("Username: ");
         username = sc.nextLine();
+        
     }
 
     public void newProfile(){
-        Scanner sc = new Scanner(System.in);
 
         System.out.print("\nSexo: ");
         sexo = sc.nextLine();
@@ -49,7 +57,6 @@ public class Account {
     }
 
     public void editProfile() {
-		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("\nSelecione o que você seja mudar:\n1 - Sexo\n2 - Idade\n3 - Cidade\n4 - País\n5 - Todos\n");
 		
@@ -98,7 +105,6 @@ public class Account {
 				pais = sc.nextLine();
 				System.out.println("Alteração feita com sucesso!");
 				break;
-		
 		}
 	}
 
@@ -123,10 +129,75 @@ public class Account {
 		}
     }
 
+    public void adicionarAmigo(ArrayList<Account> contas){
+
+        int existe1 = 0;
+        
+        System.out.println("\nDigite o nome do usuario de quem deseja adicionar.");
+        String nomeAmigo = sc.nextLine();
+
+        for(int i = 0; i < contas.size(); i++){
+            if(nomeAmigo.equals(contas.get(i).username)){     //PROCURANDO SE O NOME DO USUARIO EXISTE
+                contas.get(i).addFriendlist(username);  //ADICIONANDO SEU NOME A LISTA DE PEDIDOS DO USUARIO SOLICITADO
+                contas.get(i).mensagensFeed.add(username + " te enviou uma solicitação de amizade"); //ADICIONA NO FEED DO AMIGO QUE ENVIOU SOLICITAÇÃO
+                existe1++;
+            }
+        }
+        if(existe1 == 0){
+            System.out.println("Nome de usuario não encontrado!");
+        }
+    }
+
+    public void pedidosAmizade(ArrayList<Account> contas){
+        System.out.println("\nLista de solicitações de amizade");
+        System.out.println("Digite 1 para aceitar e 0 para recusar\n");
+
+        if(amigosAdd.size() > 0){
+            for(int i = 0; i < amigosAdd.size(); i++){ //EXIBIR OS PEDIDOS DE AMIZADE
+                System.out.println(amigosAdd.get(i) + " deseja te adicionar!");
+                System.out.print("Você aceita? "); 
+
+                int aceita = sc.nextInt();
+                sc.nextLine();
+
+                if (aceita == 0){
+                    amigosAdd.remove(i);
+                    System.out.println("\nPedido recusado!\n"); //REMOVE DA LISTA DE PEDIDOS
+                }
+                else if(aceita == 1){
+                    amigos.add(amigosAdd.get(i)); //ADICIONANDO NA SUA LISTA DE AMIGOS 
+
+                    for(int k = 0; k < contas.size(); k++){
+                        if(amigosAdd.get(i).equals(contas.get(k).username)){
+                            contas.get(k).amigos.add(username);  //ADICIONANDO NA LISTA DE AMIGOS DO USUARIO
+                            contas.get(k).mensagensFeed.add(username + " aceitou seu pedido de amizade!");
+                            System.out.println("\nAgora você e " + contas.get(k).username + " são amigos!");
+                        }
+                    }
+                    amigosAdd.remove(i);
+                }
+            }
+        }
+        else System.out.println("\nVocê não possui pedidos de amizade!\n");
+    }
+
+
+
+    public void printarAmigos(){
+        if(amigos.size() > 0){
+            System.out.println("\nSeus amigos: ");
+            for(int i = 0; i < amigos.size(); i++){
+                System.out.println("   " + amigos.get(i));
+            }
+        }
+        else{
+            System.out.println("\nVocê ainda não possui nenhum amigo!\n");
+        }
+    }
+
     public void exibirPerfilAlguem(ArrayList<Account> contas){
-        Scanner sc = new Scanner(System.in);
         int sucesso = 0;
-        System.out.println("Digite o nome de quem deseja ver o perfil");
+        System.out.println("\nDigite o nome de quem deseja ver o perfil");
         String pessoa = sc.nextLine();
 
         for(int i = 0; i < contas.size(); i++){
@@ -141,14 +212,30 @@ public class Account {
 
     }
 
-    public void addFriend(String nome){
+    public void exibirComunidadeAlguem(ArrayList<Account> contas){
+        System.out.println("\nDigite o nome da comunidade que deseja ver:");
+
+        String comuni = sc.nextLine();
+        int exibido = 0;
+
+        for(int i = 0; i < contas.size(); i++){
+            if(contas.get(i).comunidadeDono != null && comuni.equals(contas.get(i).comunidadeDono.nomeComunidade)){
+                contas.get(i).comunidadeDono.mostrarComunidade();
+                exibido++;
+            }
+        }
+        if(exibido == 0){
+            System.out.println("\nA comunidade digitada não existe!");
+        }
+    }
+
+    public void addFriendlist(String nome){
         String name = nome;
         amigosAdd.add(name); //ADICIONA NA LISTA DE PEDIDOS
         System.out.println("Pedido de amizade enviado!");
     }
 
     public void mandarMensagem(ArrayList<Account> contas){
-        Scanner sc = new Scanner(System.in);
         int decidir = 0;
         System.out.println("\nPara quem você deseja mandar a mensagem?");
         String pessoa = sc.nextLine();
@@ -181,9 +268,8 @@ public class Account {
     }
 
     public void lerMensagens(){
-        Scanner sc = new Scanner(System.in);
 
-        System.out.println("Digite o nome da pessoa que deseja ler as mensagens");
+        System.out.println("\nDigite o nome da pessoa que deseja ler as mensagens");
         if(minhasMensagens.size() > 0){
             System.out.println("Suas conversas:");
             for(int i = 0; i < minhasMensagens.size(); i++){
@@ -220,7 +306,6 @@ public class Account {
     }
     
     public void adicionarComunidade(ArrayList<Account> contas){
-        Scanner sc = new Scanner(System.in);
 
         if(comunidadeDono != null){
             System.out.println("\nDigite o usuario que deseja adicionar a sua comunidade: ");
@@ -244,8 +329,7 @@ public class Account {
     }
 
     public void mandarFeed(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Digite alguma coisa para seu feed:");
+        System.out.println("\nDigite alguma coisa para seu feed:");
         String mensagem = sc.nextLine();
 
         mensagensFeed.add(mensagem);
@@ -262,12 +346,11 @@ public class Account {
         else System.out.println("\nVocê ainda não possui nenhuma mensagem!!\n");
     }
 
-    public void exibirFeedAlguem(ArrayList<Account> contas, String nick){
-        Scanner sc = new Scanner(System.in);
+    public void exibirFeedAlguem(ArrayList<Account> contas){
         int sucesso = 0;
         int indice = 0;
         int sucesso1 = 0;
-        System.out.println("Digite o nome de quem deseja ver o Feed");
+        System.out.println("\nDigite o nome de quem deseja ver o Feed");
         String pessoa = sc.nextLine();
 
         for(int i = 0; i < contas.size(); i++){
@@ -279,11 +362,10 @@ public class Account {
         if(sucesso == 1){
             if(contas.get(indice).feedControl == 0){
                 contas.get(indice).printarFeed();
-                System.out.println("---------- SUPER DIATLOV POWER -----------");
             }
             else if(contas.get(indice).feedControl == 1){
                 for(int k = 0; k < contas.get(indice).amigos.size(); k++){
-                    if(contas.get(indice).amigos.get(k).equals(nick)){
+                    if(contas.get(indice).amigos.get(k).equals(username)){
                         contas.get(indice).printarFeed();
                         sucesso1++;
                     }
@@ -300,7 +382,6 @@ public class Account {
     }
 
     public void controlarFeed(){
-        Scanner sc = new Scanner(System.in);
         System.out.println("\nQuem você deseja que possa ver o seu Feed? Escolha um número abaixo:");
         System.out.println("0 - Todos usuarios do iFace\n1 - Somente amigos");
         int auxiliar = sc.nextInt();
@@ -312,6 +393,62 @@ public class Account {
         else if(auxiliar == 1){
             feedControl = 1;
             System.out.println("\nPronto! Apenas seus amigos podem ver seu Feed agora!\n");
+        }
+    }
+
+    public void excluirConta(ArrayList<Account> contas, int id){
+        System.out.println("\nTem certeza que deseja excluir sua conta?\nDigite 1 para confirmar e 0 para cancelar.");
+
+        int excluir = sc.nextInt();
+        sc.nextLine();
+        
+        if(excluir == 1){
+            for(int i = 0; i < contas.size(); i++) {
+                for(int j = 0; j < contas.get(i).amigos.size(); j++) {
+                    if(username.equals(contas.get(i).amigos.get(j))) { //remove da lisat de amizade
+                        contas.get(i).amigos.remove(j);
+                    }
+                }
+            }
+
+            for(int i = 0; i < contas.size(); i++) {
+                for(int j = 0; j < contas.get(i).amigosAdd.size(); j++) {
+                    if(username.equals(contas.get(i).amigosAdd.get(j))) {  //remove da lista de pedidos de amizade
+                        contas.get(i).amigosAdd.remove(j);
+                    }
+                }
+            }
+
+            for(int i = 0; i < contas.size(); i++) {
+                for(int j = 0; j < contas.get(i).minhasMensagens.size(); j++) {
+                    if(username.equals(contas.get(i).minhasMensagens.get(j).remetente)) { //remove da lista de mensagens
+                        contas.get(i).minhasMensagens.remove(j);
+                    }
+                }
+            }
+            
+            for(int i = 0; i < contas.size(); i++) {
+                if(contas.get(i).comunidadeDono != null) {
+                    for(int j = 0; j < contas.get(i).comunidadeDono.membros.size(); j++) {
+                        if(username.equals(contas.get(i).comunidadeDono.membros.get(j))) { //remove do membro de outras comunidades
+                            contas.get(i).comunidadeDono.membros.remove(j);
+                        }
+                    }
+                }
+            }
+            
+            if(comunidadeDono != null){
+                for(int i = 0; i < contas.size(); i++){
+                    for(int j = 0; j < contas.get(i).minhasComunidades.size(); j++){
+                        if(comunidadeDono.nomeComunidade.equals(contas.get(i).minhasComunidades.get(j))){
+                            contas.get(i).minhasComunidades.remove(j);
+                        }
+                    }
+                }
+            }
+        
+            contas.remove(id);
+            System.out.println("\nConta excluida com sucesso!\n");
         }
     }
 }
